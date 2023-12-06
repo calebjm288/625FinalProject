@@ -23,18 +23,17 @@ hist31 = []
 memo_dict = {}
 
 def calculate_distance(point1, point2):
+    # Use a single-level dictionary with tuple key
+    key = (tuple(point1), tuple(point2))
+
     # Check if the distance has already been computed
-    if (tuple(point1), tuple(point2)) in memo_dict:
-        #print("in the cache alread"), be careful here lol it prints thousands of times
-        return memo_dict[(tuple(point1), tuple(point2))]
-    elif (tuple(point2), tuple(point1)) in memo_dict:
-        return memo_dict[(tuple(point2), tuple(point1))]
+    if key in memo_dict:
+        return memo_dict[key]
 
     distance = np.linalg.norm(point1 - point2)
 
     # Memoize the result
-    memo_dict[(tuple(point1), tuple(point2))] = distance
-    memo_dict[(tuple(point2), tuple(point1))] = distance
+    memo_dict[key] = distance
 
     return distance
 
