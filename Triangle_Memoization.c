@@ -66,9 +66,12 @@ int main(int argc, char *argv[]) {
     // Generate triangles and update histograms
     for (int i = 0; i < n - 2; i++) {
         for (int j = i + 1; j < n - 1; j++) {
+            double dist12 = calculate_distance(&points[i], &points[j]);
+            if (dist12 >= MAX_DISTANCE){
+		continue;
+	    }
             for (int k = j + 1; k < n; k++) {
                 // Calculate distances between points
-                double dist12 = calculate_distance(&points[i], &points[j]);
                 double dist23 = calculate_distance(&points[j], &points[k]);
                 double dist31 = calculate_distance(&points[k], &points[i]);
 
