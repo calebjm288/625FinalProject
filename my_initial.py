@@ -39,18 +39,26 @@ def calc(points):
     hist31 = []
 
     global count
-
+    N = len(points)
+    print(N)
     # Generate triangles and update histograms
-    for triplet in itertools.combinations(points, 3):
-        # Calculate distances between points
-        distances = [np.linalg.norm(triplet[i] - triplet[j]) for i, j in [(0, 1), (1, 2), (2, 0)]]
+    for i in range(N):
+        for j in range(i+1,N):
+            d12 = np.sqrt((x[i] - x[j])**2 + (y[i] - y[j])**2 + (z[i] - z[j])**2)
+            #if d12 > r_max:
+                #continue
+            for k in range(j+1,N):
+                d23 = np.sqrt((x[j] - x[k])**2 + (y[j] - y[k])**2 + (z[j] - z[k])**2)
+                d31 = np.sqrt((x[k] - x[i])**2 + (y[k] - y[i])**2 + (z[k] - z[i])**2)
+                # Calculate distances between points
+                # distances = [np.linalg.norm(triplet[i] - triplet[j]) for i, j in [(0, 1), (1, 2), (2, 0)]]
 
-        if all(dist < r_max for dist in distances):
-            # Update the histograms
-            count += 1
-            hist12.append(distances[0])
-            hist23.append(distances[1])
-            hist31.append(distances[2])
+                if d12 < r_max and d23 < r_max and d31 < r_max:
+                    # Update the histograms
+                    count += 1
+                    hist12.append(d12)
+                    hist23.append(d23)
+                    hist31.append(d31)
 
 #starting time
 start = time.time()

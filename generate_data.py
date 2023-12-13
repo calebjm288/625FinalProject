@@ -1,9 +1,9 @@
 import random
 
 # Generating 1000 rows of random data in the specified format
-num_rows = 10000
+num_rows = 2000
 
-with open("inputfile10000.dat", "w") as file:
+with open("inputfile2000.dat", "w") as file:
     for _ in range(num_rows):
         row = " ".join([f"{random.uniform(0, 100):.1f}" for _ in range(3)])
         file.write(f"{row}\n")
