@@ -21,9 +21,8 @@ hist12 = []
 hist23 = []
 hist31 = []
 
-# Shared count variable and lock
-count = 0
-count_lock = threading.Lock()
+# Use ThreadLocal for thread-specific counts
+thread_local = threading.local()
 
 def calculate_distance(point1, point2, memo_dict):
     # Use a single-level dictionary with tuple key
@@ -58,10 +57,8 @@ def process_chunk(chunk_points, memo_dict):
             local_hist23.append(distances[1])
             local_hist31.append(distances[2])
 
-    with count_lock:
-        # Update the shared count variable
-        global count
-        count += local_count
+    # Store the local count in the ThreadLocal variable
+    thread_local.count = local_count
 
     return local_hist12, local_hist23, local_hist31
 
@@ -76,17 +73,17 @@ memo_dicts = [{} for _ in range(num_threads)]
 with concurrent.futures.ThreadPoolExecutor() as executor:
     futures = [executor.submit(process_chunk, chunk, memo_dict) for chunk, memo_dict in zip(point_chunks, memo_dicts)]
 
-    # Collect results from all threads
+    # Collect results from all threads and sum the counts
+    count = sum(future.result()[0].count for future in concurrent.futures.as_completed(futures))
+    # You can also collect histograms if needed
     for future in concurrent.futures.as_completed(futures):
         local_hist12, local_hist23, local_hist31 = future.result()
-
-        # Combine results
         hist12.extend(local_hist12)
         hist23.extend(local_hist23)
         hist31.extend(local_hist31)
 
 endtime = time.time()
 
-# Visualize the histograms
+# Visualize the count
 print(count)
 print(endtime - starttime)
