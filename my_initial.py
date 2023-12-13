@@ -3,15 +3,17 @@ import itertools
 import time
 #import matplotlib.pyplot as plt
 from memory_profiler import memory_usage
+import sys
 
 # Assuming you have your data as a NumPy array called 'points' with shape (n, 3).
 
 # Parameters
-r_max = 5.0  # The maximum side length for a valid triangle
+r_max = 25.0  # The maximum side length for a valid triangle
 
+num_points = sys.argv[1]
 
 # inputfile.dat has three columns of numbers
-x, y, z = np.loadtxt("inputfile.dat", usecols =(0, 1, 2), unpack = True)
+x, y, z = np.loadtxt("inputfile{}.dat".format(num_points), usecols =(0, 1, 2), unpack = True)
 
 #print(x)
 
@@ -29,12 +31,14 @@ points = np.column_stack((x,y,z))
 
 # Initialize histograms
 
+count = 0
+
 def calc(points):
     hist12 = []
     hist23 = []
     hist31 = []
 
-    count = 0
+    global count
 
     # Generate triangles and update histograms
     for triplet in itertools.combinations(points, 3):
@@ -60,7 +64,8 @@ end = time.time()
 # Visualize the histograms
 #print(count)
 
-print("DATA,OurInitialPython,1000,{},{}".format(max(mem),(end-start)))
+print("DATA,OurInitialPython,{},{},{}".format(num_points,max(mem),(end-start)))
 print(max(mem))
 
 print(end-start)
+print(count)
