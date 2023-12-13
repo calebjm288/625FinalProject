@@ -11,12 +11,12 @@ r_max = 5.0  # The maximum side length for a valid triangle
 
 
 # inputfile.dat has three columns of numbers
-x, y, z = np.loadtxt("inputfile300.dat", usecols =(0, 1, 2), unpack = True)
+x, y, z = np.loadtxt("inputfile.dat", usecols =(0, 1, 2), unpack = True)
 
-print(x)
+#print(x)
 
 points = np.column_stack((x,y,z))
-print(points)
+#print(points)
 # Sample data: Three points in 3D space
 #point1 = [1.0, 2.0, 3.0]
 #point2 = [4.0, 5.0, 3.3]
@@ -60,6 +60,7 @@ end = time.time()
 # Visualize the histograms
 #print(count)
 
+print("DATA,OurInitialPython,1000,{},{}".format(max(mem),(end-start)))
 print(max(mem))
 
 print(end-start)
