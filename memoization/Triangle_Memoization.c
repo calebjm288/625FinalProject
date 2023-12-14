@@ -3,8 +3,8 @@
 #include <math.h>
 #include <time.h>
 
-#define MAX_POINTS 1000
-#define MAX_DISTANCE 5.0
+#define MAX_POINTS 3000
+#define MAX_DISTANCE 25.0
 
 typedef struct {
     double x, y, z;
@@ -50,16 +50,16 @@ int main(int argc, char *argv[]) {
 
     // Calculate the maximum number of triangles
     int max_triangles = n * (n - 1) * (n - 2) / 6;
-
+    
     // Initialize histograms dynamically
-    double *hist12 = malloc(max_triangles * sizeof(double));
-    double *hist23 = malloc(max_triangles * sizeof(double));
-    double *hist31 = malloc(max_triangles * sizeof(double));
+    //double *hist12 = malloc(max_triangles * sizeof(double));
+    //double *hist23 = malloc(max_triangles * sizeof(double));
+    //double *hist31 = malloc(max_triangles * sizeof(double));
 
-    if (hist12 == NULL || hist23 == NULL || hist31 == NULL) {
-        perror("Error allocating memory");
-        return 1;
-    }
+    //if (hist12 == NULL || hist23 == NULL || hist31 == NULL) {
+    //    perror("Error allocating memory");
+    //    return 1;
+    //}
 
     int count = 0;
 
@@ -77,20 +77,20 @@ int main(int argc, char *argv[]) {
 
                 if (dist12 < MAX_DISTANCE && dist23 < MAX_DISTANCE && dist31 < MAX_DISTANCE) {
                     // Update the histograms
-                    hist12[count] = dist12;
-                    hist23[count] = dist23;
-                    hist31[count] = dist31;
+                   // hist12[count] = dist12;
+                    //hist23[count] = dist23;
+                    //hist31[count] = dist31;
                     count++;
                 }
             }
         }
     }
-
+ 
     clock_t end_time = clock();
     double elapsed_time = ((double) (end_time - start_time)) / CLOCKS_PER_SEC;
 
     // Save results to a CSV file
-    FILE *csv_file = fopen("results.csv", "w");
+    FILE *csv_file = fopen("results.csv", "a");
     if (csv_file == NULL) {
         perror("Error creating CSV file");
         return 1;
@@ -101,11 +101,11 @@ int main(int argc, char *argv[]) {
 
     // Close CSV file
     fclose(csv_file);
-
+    /*
     // Free dynamically allocated memory
     free(hist12);
     free(hist23);
     free(hist31);
-
+    */
     return 0;
 }
